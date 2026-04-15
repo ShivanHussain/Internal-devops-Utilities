@@ -1,12 +1,12 @@
-# Internal DevOps Utilities
+# Internal DevOps Utilities Platform
 
-An internal **FastAPI-based DevOps utility platform** built using **Python**, **FastAPI**, **Boto3**, and **psutil**. This project provides APIs to monitor system metrics, fetch AWS resource details, and perform basic AWS operations like EC2 instance creation.
+A lightweight **FastAPI-based DevOps utility platform** built using **Python, FastAPI, Boto3, and psutil**. This project provides APIs to monitor system health, interact with AWS services, and automate basic cloud operations.
 
 ---
 
-## Features
+##  Features
 
-### System Monitoring
+###  System Monitoring
 
 * CPU usage monitoring
 * Memory usage monitoring
@@ -18,7 +18,7 @@ An internal **FastAPI-based DevOps utility platform** built using **Python**, **
 * List S3 buckets (new vs old buckets)
 * Fetch EC2 instance details
 * List IAM users
-* Create EC2 instances dynamically
+* Create EC2 instances dynamically:
 
   * Automatically creates key pair
   * Generates `.pem` file locally
@@ -27,11 +27,11 @@ An internal **FastAPI-based DevOps utility platform** built using **Python**, **
 
 ### Utility APIs
 
-* Simple **Hello API** for health check/testing
+* Simple **Hello API** for testing and health checks
 
 ---
 
-## Project Structure
+##  Project Structure
 
 ```
 internal-devops-utilities/
@@ -40,19 +40,19 @@ internal-devops-utilities/
 │   ├── api.py                # FastAPI app initialization
 │   │
 │   ├── routers/
-│   │   ├── aws.py             # AWS related routes
-│   │   ├── metrics.py         # System metrics routes
-│   │   └── hello.py           # Test/health route
+│   │   ├── aws.py            # AWS routes
+│   │   ├── metrics.py        # System metrics routes
+│   │   └── hello.py          # Health/test route
 │   │
 │   ├── services/
-│   │   ├── aws_service.py     # AWS business logic (boto3)
-│   │   ├── metrics_service.py # System metrics logic
-│   │   └── hello_service.py   # Hello service
+│   │   ├── aws_service.py     # AWS logic (boto3)
+│   │   ├── metrics_service.py # Metrics logic
+│   │   └── hello_service.py   # Hello logic
 │   │
 │   ├── schema/
-│   │   └── ec2_instance.py    # Pydantic schema for EC2 creation
+│   │   └── ec2_instance.py    # EC2 schema
 │
-├── main.py               # Uvicorn entry point
+├── main.py                   # Entry point
 ├── requirements.txt
 ├── README.md
 └── .env (optional)
@@ -60,48 +60,48 @@ internal-devops-utilities/
 
 ---
 
-## Tech Stack
+##  Tech Stack
 
 * **Python 3.9+**
-* **FastAPI** – Web framework
-* **Uvicorn** – ASGI server
-* **Boto3** – AWS SDK
-* **psutil** – System metrics
-* **pytz** – Timezone handling
+* **FastAPI** (Web Framework)
+* **Uvicorn** (ASGI Server)
+* **Boto3** (AWS SDK)
+* **psutil** (System Metrics)
+* **pytz** (Timezone Handling)
 
 ---
 
-## Installation & Setup
+##  Installation & Setup
 
-### 1 Clone Repository
+### Clone Repository
 
 ```bash
 git clone https://github.com/ShivanHussain/Internal-devops-Utilities.git
 cd internal-devops-utilities
 ```
 
-### 2 Create Virtual Environment
+### Create Virtual Environment
 
 ```bash
 python3 -m venv env
 source env/bin/activate
 ```
 
-### 3 Install Dependencies
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4 Configure AWS Credentials
+### Configure AWS Credentials
 
-Make sure AWS credentials are configured:
+#### Option 1: AWS CLI
 
 ```bash
 aws configure
 ```
 
-OR using environment variables:
+#### Option 2: Environment Variables
 
 ```bash
 export AWS_ACCESS_KEY_ID=xxxx
@@ -111,37 +111,48 @@ export AWS_DEFAULT_REGION=us-east-1
 
 ---
 
-##  Running the Application
+## Running the Application
 
 ```bash
-python3 main.py
+uvicorn app.api:app --host 0.0.0.0 --port 8000
+
+OR
+ 
+python main.py
 ```
 
-App will be available at:
+###  Access URLs
 
-* **Swagger UI** → [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-* **ReDoc** → [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+* Swagger UI → [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+* ReDoc → [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
 
 ---
 
+##  API Endpoints
 
-Response:
+### 🔹 Health Check
+
+```
+GET /
+```
+
+**Response:**
 
 ```json
 {
-  "messsage": "Hello Dosto"
+  "message": "Hello Dosto"
 }
 ```
 
 ---
 
-### System Metrics
+### 🔹 System Metrics
 
 ```
 GET /metrics
 ```
 
-Response:
+**Response:**
 
 ```json
 {
@@ -155,7 +166,7 @@ Response:
 
 ---
 
-### 🔹 S3 Buckets Info
+### 🔹 S3 Buckets
 
 ```
 GET /aws/s3
@@ -163,7 +174,7 @@ GET /aws/s3
 
 ---
 
-### 🔹 EC2 Instances Info
+### 🔹 EC2 Instances
 
 ```
 GET /aws/ec2
@@ -171,7 +182,7 @@ GET /aws/ec2
 
 ---
 
-### 🔹 IAM Users Info
+### 🔹 IAM Users
 
 ```
 GET /aws/iam
@@ -185,7 +196,7 @@ GET /aws/iam
 POST /aws/create-instance
 ```
 
-Request Body:
+**Request Body:**
 
 ```json
 {
@@ -198,7 +209,7 @@ Request Body:
 }
 ```
 
-Response:
+**Response:**
 
 ```json
 {
@@ -210,26 +221,62 @@ Response:
 
 ---
 
-## ⚠️ Notes & Best Practices
+## Best Practices
 
-* `.pem` key files are generated locally — **store securely**
-* Avoid committing AWS credentials or `.pem` files
-* IAM user running this app must have:
+*  Never commit AWS credentials or `.pem` files
+*  Store `.pem` keys securely
+*  Use IAM roles instead of hardcoded credentials (recommended for EC2)
 
-  * EC2FullAccess (or limited EC2 permissions)
-  * S3 read permissions
-  * IAM list permissions
+### Required IAM Permissions:
+
+* EC2 (Create, Describe)
+* S3 (Read)
+* IAM (List users)
 
 ---
 
 ##  Future Enhancements
 
 * Authentication & RBAC
-* Prometheus / Grafana integration
+* Prometheus & Grafana integration
 * CloudWatch metrics support
 * Alerting system (Slack / Email)
-* Docker support
+* Docker & Kubernetes deployment
 * Multi-region AWS support
 
 ---
+
+##  Docker Support
+
+###  Build Docker Image
+
+```bash
+docker build -t internal-devops-utils .
+```
+
+### Run Docker Container
+
+```bash
+docker run -d -p 8000:8000 \
+  -e AWS_ACCESS_KEY_ID=your_key \
+  -e AWS_SECRET_ACCESS_KEY=your_secret \
+  -e AWS_DEFAULT_REGION=us-east-1 \
+  internal-devops-utils
+```
+
+
+---
+
+##  Summary
+
+This project is a **mini DevOps toolkit** that combines:
+
+* System monitoring
+* AWS automation
+* API-based architecture
+
+
+---
+
+*Built for learning, automation, and scalability.*
 
