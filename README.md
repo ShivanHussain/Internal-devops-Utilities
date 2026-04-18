@@ -246,7 +246,7 @@ POST /aws/create-instance
 
 ---
 
-##  Docker Support
+##  Docker
 
 ###  Build Docker Image
 
@@ -266,6 +266,24 @@ docker run -d -p 8000:8000 \
 
 
 ---
+
+##  Docker Compose 
+
+###  Start Application
+
+```bash
+docker-compose up -d
+```
+
+### Stop Application
+
+```bash
+docker-compose down
+```
+
+
+---
+
 
 ##  Summary
 

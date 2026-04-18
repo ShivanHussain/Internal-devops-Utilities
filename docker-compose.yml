@@ -1,0 +1,10 @@
+services:
+  web_ser:
+    build: .
+    container_name: internal_devops_utils
+    ports:
+      - "8000:8000"
+    environment:
+      AWS_ACCESS_KEY_ID: your_key 
+      AWS_SECRET_ACCESS_KEY: your_secret 
+      AWS_DEFAULT_REGION: us-east-1 
